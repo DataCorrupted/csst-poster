@@ -90,10 +90,10 @@
    \setlength{\textwidth}{119.3cm} %% paperwidth - (5cm + 5cm)
    \setlength{\textheight}{81.4cm} %% paperheight - (5cm + 5cm)
 \else\ifanull
-        \setlength{\paperwidth}{118.82cm}
-        \setlength{\paperheight}{83.96cm}
-        \setlength{\textwidth}{108.82cm} %% paperwidth - (5cm + 5cm)
-        \setlength{\textheight}{73.96cm} %% paperheight - (5cm + 5cm)
+        \setlength{\paperwidth}{96.52cm}
+        \setlength{\paperheight}{76.20cm}
+        \setlength{\textwidth}{86.52cm} %% paperwidth - (5cm + 5cm)
+        \setlength{\textheight}{66.20cm} %% paperheight - (5cm + 5cm)
      \else\ifaeins
              \setlength{\paperwidth}{83.96cm}
              \setlength{\paperheight}{59.4cm}
@@ -180,7 +180,7 @@
 \ifanullb
    \ifportrait\special{papersize=91.4cm,129.3cm}\else\special{papersize=129.3cm,91.4cm}\fi
 \else\ifanull
-        \ifportrait\special{papersize=83.96cm,118.82cm}\else\special{papersize=118.82cm,83.96cm}\fi
+        \ifportrait\special{papersize=76.20cm,96.52cm}\else\special{papersize=118.82cm,83.96cm}\fi
      \else\ifaeins
              \ifportrait\special{papersize=59.4cm,83.96cm}\else\special{papersize=83.96cm,59.4cm}\fi
           \else\ifazwei
