@@ -49,8 +49,8 @@
 \begin{minipage}[b]{0.6\linewidth}
 \veryHuge \color{NavyBlue} \textbf{NDNCERT in Identity Manager} \color{Black}\\ % Title
 \Huge\textit{A trial to implement an identity manage using NDNCERT in Named Data Networking(NDN)}\\[2cm] % Subtitle
-\huge \textbf{Yuyang(Peter) Rong}\\[0.5cm] % Author(s)
-\huge ShanghaiTech University\\[0.4cm] % University/organization
+\huge \textbf{Yuyang(Peter) Rong, Arthi Padmanabhan, Lixia Zhang}\\[0.5cm] % Author(s)
+\Large ShanghaiTech / UCLA \\ [0.4cm] % University/organization
 \Large \texttt{PeterRong96@gmail.com} --- +1 (310) 307 9952\\
 \end{minipage}
 %
@@ -72,7 +72,7 @@
 
 \begin{abstract}
 
-Security and privacy in network are gaining more and more attention. NDN proposed by Lixia Zhang has shown great potential in security. In NDN, each packet has to be signed and thus secured. In this work, we would use NDNCERT, a certificate manager, to request and manage certificates that can be used to sign data packets. We would install this manager in cell phones and thus allow other applications to gain certificate through this manager. 
+Security and privacy in networking are gaining more and more attention nowadays. NDN proposed by Lixia Zhang has shown great potential in security. In NDN, each packet has to be signed and thus secured. In this work, we would use NDNCERT, a certificate manager, to request and manage certificates that can be used to sign data packets. We would install this manager in cell phones and thus allow other applications to gain certificate through this manager. 
 
 \end{abstract}
 
@@ -83,7 +83,7 @@ Security and privacy in network are gaining more and more attention. NDN propose
 \color{SaddleBrown} % SaddleBrown color for the introduction
 
 \section*{Introduction}
-NDN requires each packet to be signed and thus can be verified. In real life applications, how they can sign their packets become a problem. Packets can be intact with the protection of self-signed signature, but it does not make the packet, nor the application, trustworthy. NDNCERT is a protocol that allows client to request a certificate that can be used to sign packets from Certificate Authority(CA). Once certificate is issued by CA, application can use that certificate to sign packets and anyone that truest the CA can trust that application. We would use NDNCERT to write a identity manager to request certificates from CA and present them to applications that's request it.
+NDN requires each packet to be signed and thus can be verified. In real life applications, how they can sign their packets become a problem. Packets can be intact with the protection of self-signed signature, but it does not make the packet, nor the application, trustworthy. NDNCERT is a protocol that allows client to request a certificate that can be used to sign packets from Certificate Authority(CA). Once certificate is issued by CA, application can use that certificate to sign packets and anyone that truest the CA can trust that application. We would use NDNCERT to write a identity manager to request certificates from CA and present them to applications that are requesting it.
 
 %----------------------------------------------------------------------------------------
 %	OBJECTIVES
@@ -94,9 +94,9 @@ NDN requires each packet to be signed and thus can be verified. In real life app
 \section*{Main Objectives}
 
 \begin{enumerate}
-\item Use NDNCERT to update identity manager;
+\item Use NDNCERT to write identity manager;
 \item Explore NDN development on Android and provide experience for other apps;
-\item Provide a identity manager to update NDNFit.
+\item Provide an identity manager to update NDNFit.
 \end{enumerate}
 
 %----------------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ NDN requires each packet to be signed and thus can be verified. In real life app
 \end{minipage}
 \begin{minipage}[b]{0.45\linewidth}
 	\includegraphics[width=\linewidth]{figures/protocol.png}
-	\captionof{figure}{NDNCERT protocol for certificate generation}
+	\captionof{figure}{NDNCERT protocol}
 \end{minipage}
 
 %------------------------------------------------
@@ -136,9 +136,9 @@ NDN requires each packet to be signed and thus can be verified. In real life app
 	NDNCERT provides flexible mechanisms to request certificate from a certificate authority(CA) and, as soon as certificate is obtained, mechanisms to issue and manage certificates in the designated namespace.
 \par
 	In our project, we will be mainly focus on NDNCERT's client part. 
-	As we would use NDNCERT client to get a certificate from CA and then act as identity manager.
+	As we would use NDNCERT client to get a certificate from CA and then manages these identities.
 \par
-	For each client to get a certificate, the steps listed in the right image should be performed:
+	For each client to get a certificate, the steps listed in the figure above should be performed.
 
 %------------------------------------------------
 % TODO: This too.
@@ -147,7 +147,10 @@ NDN requires each packet to be signed and thus can be verified. In real life app
 	Applications like NDNFit require mobile clients. 
 	In our case, we preferred Android over Apple, as Android are easier to develop and test.
 	What's more, in the long run Android can be rooted to support NDN, yet Apple can't.
-	Android has to be developed using Java, yet NDNCERT and NDN are written in c++. Whether or not to use Java Native Interface has been a problem. JNI provides native access to non-Java languages, allowing us to call c/c++ functions using Java. In our first implementation we didn't use Java, instead we rewrote NDNCERT using Java. The benefits includes:
+	Android has to be developed using Java, yet NDNCERT and NDN are written in c++. 
+	Whether or not to use JNI has been a problem. 
+	JNI provides native access to non-Java languages, allowing us to call c/c++ functions using Java. 
+	In our first implementation we didn't use Java, instead we rewrote NDNCERT using Java. The benefits includes:
 	\begin{itemize}
 		\item No overheads for calling JNI.
 		\item Easier to program/debug than JNI.
@@ -158,7 +161,7 @@ NDN requires each packet to be signed and thus can be verified. In real life app
 		\item Code base may be too hard to maintain. Same feature has to be implemented/ debugged twice.
 	\end{itemize}
 \par
-	Therefore, currently we are using JNI. We would program JNI and fill in c++ functions that calls NDNCERT's functions.
+	We implemented both and compared the process and the difficulty of developing.
 
 %----------------------------------------------------------------------------------------
 %	RESULTS 
@@ -196,8 +199,8 @@ Currently, the user can view details about one identity by pressing the name of 
 	Identity manager is now functional, but there are more details that can be added, including:
 	\begin{itemize}
 		\item identity deleting, 
-		\item multiple identity collision handling
-		\item certificate distribute when requested by other app
+		\item collision handling when identities have same name,
+		\item certificate distribute when requested by other app.
 	\end{itemize} 
 	There are still coding to do before this app can be used by users.
 
@@ -215,7 +218,7 @@ Currently, the user can view details about one identity by pressing the name of 
 
 \section*{Acknowledgments}
 
-We would like to thank Lixia Zhang, Arthi Padmanabhan for your help and guidance. Alex Afanasyev provided a lot of help when we were develop Android application. Finally, we would like to thanks Ren Sun and CSST for providing such great opportunity.
+We would like to thank Lixia Zhang, Arthi Padmanabhan for their help and guidance. Alex Afanasyev provided a lot of help when we were developing Android application. Finally, we would like to thanks Ren Sun and CSST for providing such great opportunity.
 %----------------------------------------------------------------------------------------
 
 \end{multicols}
