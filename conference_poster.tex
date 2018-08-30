@@ -30,7 +30,6 @@
 %\usepackage{palatino} % Uncomment to use the Palatino font
 
 \usepackage{graphicx} % Required for including images
-\graphicspath{{figures/}} % Location of the graphics files
 \usepackage{booktabs} % Top and bottom rules for table
 \usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
 \usepackage{amsfonts, amsmath, amsthm, amssymb} % For math fonts, symbols and environments
@@ -49,17 +48,17 @@
 
 \begin{minipage}[b]{0.6\linewidth}
 \veryHuge \color{NavyBlue} \textbf{NDNCERT in Identity Manager} \color{Black}\\ % Title
-\Huge\textit{A trial to implement identity manager for NDNFit using ndncert in Named Data Networking(NDN)}\\[2cm] % Subtitle
+\Huge\textit{A trial to implement an identity manage using NDNCERT in Named Data Networking(NDN)}\\[2cm] % Subtitle
 \huge \textbf{Yuyang(Peter) Rong}\\[0.5cm] % Author(s)
 \huge ShanghaiTech University\\[0.4cm] % University/organization
 \Large \texttt{PeterRong96@gmail.com} --- +1 (310) 307 9952\\
 \end{minipage}
 %
 \begin{minipage}[b]{0.4\linewidth}
-\includegraphics[width=\linewidth]{logo.png}\\
+	\includegraphics[width=\linewidth]{figures/logo.png}\\
 \end{minipage}
 
-\vspace{1cm} % A bit of extra whitespace between the header and poster content
+\vspace{0.7cm} % A bit of extra whitespace between the header and poster content
 
 %----------------------------------------------------------------------------------------
 
@@ -73,7 +72,7 @@
 
 \begin{abstract}
 
-Sed fringilla tempus hendrerit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam ut elit sit amet metus lobortis consequat sit amet in libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel sem magna. Nunc at convallis urna. isus ante. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing. Quisque vestibulum eros eu. Phasellus imperdiet, tortor vitae congue bibendum, felis enim sagittis lorem, et volutpat ante orci sagittis mi. Morbi rutrum laoreet semper. Morbi accumsan enim nec tortor consectetur non commodo nisi sollicitudin. Proin sollicitudin. Pellentesque eget orci eros. Fusce ultricies, tellus et pellentesque fringilla, ante massa luctus libero, quis tristique purus urna nec nibh.
+Security and privacy in network are gaining more and more attention. NDN proposed by Lixia Zhang has shown great potential in security. In NDN, each packet has to be signed and thus secured. In this work, we would use NDNCERT, a certificate manager, to request and manage certificates that can be used to sign data packets. We would install this manager in cell phones and thus allow other applications to gain certificate through this manager. 
 
 \end{abstract}
 
@@ -84,10 +83,7 @@ Sed fringilla tempus hendrerit. Vestibulum ante ipsum primis in faucibus orci lu
 \color{SaddleBrown} % SaddleBrown color for the introduction
 
 \section*{Introduction}
-
-Aliquam non lacus dolor, \textit{a aliquam quam} \cite{zhang2018ndnfit}. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla in nibh mauris. Donec vel ligula nisi, a lacinia arcu. Sed mi dui, malesuada vel consectetur et, egestas porta nisi. Sed eleifend pharetra dolor, et dapibus est vulputate eu. \textbf{Integer faucibus elementum felis vitae fringilla.} In hac habitasse platea dictumst. Duis tristique rutrum nisl, nec vulputate elit porta ut. Donec sodales sollicitudin turpis sed convallis. Etiam mauris ligula, blandit adipiscing condimentum eu, dapibus pellentesque risus.
-
-\textit{Aliquam auctor}, metus id ultrices porta, risus enim cursus sapien, quis iaculis sapien tortor sed odio. Mauris ante orci, euismod vitae tincidunt eu, porta ut neque. Aenean sapien est, viverra vel lacinia nec, venenatis eu nulla. Maecenas ut nunc nibh, et tempus libero. Aenean vitae risus ante. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing.
+NDN requires each packet to be signed and thus can be verified. In real life applications, how they can sign their packets become a problem. Packets can be intact with the protection of self-signed signature, but it does not make the packet, nor the application, trustworthy. NDNCERT is a protocol that allows client to request a certificate that can be used to sign packets from Certificate Authority(CA). Once certificate is issued by CA, application can use that certificate to sign packets and anyone that truest the CA can trust that application. We would use NDNCERT to write a identity manager to request certificates from CA and present them to applications that's request it.
 
 %----------------------------------------------------------------------------------------
 %	OBJECTIVES
@@ -98,9 +94,9 @@ Aliquam non lacus dolor, \textit{a aliquam quam} \cite{zhang2018ndnfit}. Cum soc
 \section*{Main Objectives}
 
 \begin{enumerate}
-\item Update NDNFit components to fit in most recent ndn-cxx library;
 \item Use NDNCERT to update identity manager;
-\item Explore NDN development on Android and provide experience for other Apps.
+\item Explore NDN development on Android and provide experience for other apps;
+\item Provide a identity manager to update NDNFit.
 \end{enumerate}
 
 %----------------------------------------------------------------------------------------
@@ -112,13 +108,26 @@ Aliquam non lacus dolor, \textit{a aliquam quam} \cite{zhang2018ndnfit}. Cum soc
 %------------------------------------------------
 
 \subsection*{NDN\cite{zhang2014named}}
+\par
+	Unlike tradition TCP/IP architecture, in NDN every data is named under a namespace. 
+	To request for a piece of data, one can express an interest with data's name inside and wait.
+	When an interest is received, the corresponding data should be sent. 
+	In this consumer-producer model, each and every data packet has to be signed and thus consumer can verify the integrity of the data.
+\par
+	Routers behavior is not our focus in this work, you can refer to the figure below or the paper cited to see how it works.
+\par
+\begin{minipage}[b]{0.55\linewidth}
+	\includegraphics[width=\linewidth]{figures/packet.png}
+	\captionof{figure}{packet format in NDN}
+	\includegraphics[width=\linewidth]{figures/router.png}
+	\captionof{figure}{router behaviors}
+\end{minipage}
+\begin{minipage}[b]{0.45\linewidth}
+	\includegraphics[width=\linewidth]{figures/protocol.png}
+	\captionof{figure}{NDNCERT protocol for certificate generation}
+\end{minipage}
 
 %------------------------------------------------
-
-\subsection*{NDNFit\cite{zhang2018ndnfit}}
-
-%------------------------------------------------
-
 \subsection*{NDN Certificate management protocol(NDNCERT)\cite{zhang2017ndncert}}
 \par
 	NDNCERT enables automatic certificate management in NDN. 
@@ -129,24 +138,15 @@ Aliquam non lacus dolor, \textit{a aliquam quam} \cite{zhang2018ndnfit}. Cum soc
 	In our project, we will be mainly focus on NDNCERT's client part. 
 	As we would use NDNCERT client to get a certificate from CA and then act as identity manager.
 \par
-	For each client to get a certificate, the following should be performed:
-	\begin{itemize}
-		\item Select a CA server from given configuration file.
-		\item \_PROBE interest should be expressed. CA would reply an available namespace. Some CAs may allow us to skip this and assume any namespace is available.
-		\item \_NEW interest would be expressed to start. A asymmetric key would be generated by the user and attached in the interest to verify both user and CA's identity. Once CA got this interest, all available challenge types will be replied in a data packet.
-		\item \_SELECT interest expressed with challenge type and other required information in the name of this interest. Only status information would be replied. The user should find the challenge secret through SMS, Email or other method.
-		\item \_VALIDATE interest will be expressed with secret provided by the user. If the secret is correct, certificate would be granted; or the user have to re-express \_VALIDATE interest.
-		\item \_DOWNLOAD interest is expressed to ask CA for certificate.
-	\end{itemize}
+	For each client to get a certificate, the steps listed in the right image should be performed:
 
 %------------------------------------------------
-
+% TODO: This too.
 \subsection*{Android \& Java Native Interface(JNI)}
 \par 
 	Applications like NDNFit require mobile clients. 
 	In our case, we preferred Android over Apple, as Android are easier to develop and test.
 	What's more, in the long run Android can be rooted to support NDN, yet Apple can't.
-\subsubsection*{JNI}
 	Android has to be developed using Java, yet NDNCERT and NDN are written in c++. Whether or not to use Java Native Interface has been a problem. JNI provides native access to non-Java languages, allowing us to call c/c++ functions using Java. In our first implementation we didn't use Java, instead we rewrote NDNCERT using Java. The benefits includes:
 	\begin{itemize}
 		\item No overheads for calling JNI.
@@ -159,24 +159,22 @@ Aliquam non lacus dolor, \textit{a aliquam quam} \cite{zhang2018ndnfit}. Cum soc
 	\end{itemize}
 \par
 	Therefore, currently we are using JNI. We would program JNI and fill in c++ functions that calls NDNCERT's functions.
-\subsubsection*{Security}
-\par
-	The previous version of NDNFit was based on security V1. 
-	But now we are switching to V2. 
-	Different from V1 where we can take certificates to ourselves, V2 will store them in file system automatically. 
-\subsubsection*{UI}
-\par
-	The UI would be very different from the previous version. 
-	As we are requirement more inputs from the user.
-	However, Android is an event driven system, that is to say, we cann't wait for user to input, instead, the system will notify us that there are new input from the user. 
-	This requires us to write client code in a callback fashion.
 
 %----------------------------------------------------------------------------------------
 %	RESULTS 
 %----------------------------------------------------------------------------------------
 
 \section*{Result}
-
+\par
+Currently, the user can view details about one identity by pressing the name of the identity in the main page, or create one by pressing plus sign. The UI of certain steps in the process for apply for a new certificate is shown below. 
+\par
+\begin{minipage}[b]{\linewidth}
+	\centering
+	\includegraphics[width=0.24\linewidth]{figures/main-activity.jpg}
+	\includegraphics[width=0.24\linewidth]{figures/select.jpg}
+	\includegraphics[width=0.24\linewidth]{figures/validate.jpg}
+	\includegraphics[width=0.24\linewidth]{figures/download.jpg}
+\end{minipage}
 
 %----------------------------------------------------------------------------------------
 %	CONCLUSIONS
@@ -195,11 +193,14 @@ Aliquam non lacus dolor, \textit{a aliquam quam} \cite{zhang2018ndnfit}. Cum soc
 \section*{Future Work}
 
 \par 
-	Identity manager is now functional, but there are more details that can be added, including identity deleting, multiple identity manage, etc. 
+	Identity manager is now functional, but there are more details that can be added, including:
+	\begin{itemize}
+		\item identity deleting, 
+		\item multiple identity collision handling
+		\item certificate distribute when requested by other app
+	\end{itemize} 
 	There are still coding to do before this app can be used by users.
-\par 
-	However, identity manager, although important, is just one component of NDNFit. 
-	There are other parts including DVU, DSU, etc. that need to change from security V1 to V2.
+
 %----------------------------------------------------------------------------------------
 %	REFERENCES
 %----------------------------------------------------------------------------------------
@@ -212,9 +213,9 @@ Aliquam non lacus dolor, \textit{a aliquam quam} \cite{zhang2018ndnfit}. Cum soc
 %	ACKNOWLEDGEMENTS
 %----------------------------------------------------------------------------------------
 
-\section*{Acknowledgements}
+\section*{Acknowledgments}
 
-I would like to thank Lixia Zhang, Arthi Padmanabhan for your help and guidance. Alex Afanasyev provided a lot of help when I was develop Android application. Finally, I would like to thanks Ren Sun and CSST for providing such great opportunity.
+We would like to thank Lixia Zhang, Arthi Padmanabhan for your help and guidance. Alex Afanasyev provided a lot of help when we were develop Android application. Finally, we would like to thanks Ren Sun and CSST for providing such great opportunity.
 %----------------------------------------------------------------------------------------
 
 \end{multicols}
