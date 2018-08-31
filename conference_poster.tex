@@ -83,7 +83,7 @@ Security and privacy in networking are gaining more and more attention nowadays.
 \color{SaddleBrown} % SaddleBrown color for the introduction
 
 \section*{Introduction}
-NDN requires each packet to be signed and thus can be verified. However, our ability to verify the data does not necessarily mean we can trust the signing entity. NDNCERT is a protocol that allows client to request a certificate from Certificate Authority(CA) that can be used to sign packets. Applications like NDNFit can use such a manager to manage other applications. We used NDNFit as a proof-of-concept example to show that NDNCERT can be used in identity to help manage and distribute identities.
+NDN requires each data packet to be signed and thus can be verified. However, our ability to verify the data does not necessarily mean that we can trust the signing entity. NDNCERT is a protocol that allows client to request a certificate from Certificate Authority(CA) that can be used to sign packets. Applications like NDNFit can use such a manager to manage other applications. We used NDNFit as a proof-of-concept example to show that NDNCERT can be used in identity manager to help manage and distribute identities.
 
 %----------------------------------------------------------------------------------------
 %	OBJECTIVES
@@ -111,7 +111,8 @@ NDN requires each packet to be signed and thus can be verified. However, our abi
 \par
 	Unlike tradition TCP/IP architecture, in NDN every data is named under a namespace. 
 	To request for a piece of data, one can express an interest with data's name inside and wait.
-	When an interest is received, the corresponding data should be sent. 
+	When an interest is received, the corresponding data should be sent if it exists. 
+	The details about the format of the packets can be found in the figure below.
 	In this consumer-producer model, each and every data packet has to be signed and thus consumer can verify the integrity of the data.
 
 %------------------------------------------------
@@ -121,7 +122,7 @@ NDN requires each packet to be signed and thus can be verified. However, our abi
 	In NDN, everyone has corresponding namespace and the certificate to sign any data produced in this namespace.
 	However, this only guarantees the integrity of the data, consumers can not distinguish if the producer of the data is malicious.
 	A mechanism is provided in NDNCERT to get certificate from Certificate Authority(CA).
-	Making it possible for one entity to trust the other entity if it has a certificate presented by a trustworthy CA.
+	Making it possible for one entity to trust the other if the data received is signed by a certificate presented by a trustworthy CA.
 \par
 \begin{minipage}[b]{0.55\linewidth}
 	\includegraphics[width=\linewidth]{figures/packet.png}
@@ -166,9 +167,9 @@ NDN requires each packet to be signed and thus can be verified. However, our abi
 \par
 	NDNFit is a set of applications that run on different platforms. 
 	The project initiates from OpenmHealth. 
-	NDNFit contains data generation app, store(DSU), visualize(DVU), process(DPU). 
+	NDNFit contains data generation, store(DSU), visualize(DVU), process(DPU) units. 
 	Combined they would generate, store and analysis your health data.
-	But for NDNFit to work, each application and user needs a certificate to generate or transfer data.
+	But for NDNFit to work, each application and user needs a certificate to generate or transfer data in their namespace.
 	These certificates will not only secure data, but also identify users and thus separate their data apart.
 	For a detailed explanation of how components of NDNFit work, you may refer to the figure above.
 
@@ -181,8 +182,8 @@ NDN requires each packet to be signed and thus can be verified. However, our abi
 Currently, the user can view details about one identity by pressing the name of the identity in the main page, or create one by pressing plus sign. 
 The UI of certain steps in the process for apply for a new certificate is shown below. 
 \par
-When user first start any application, for example, NDNFit, a certificate will be requested and the user would be lead to identity manager.
-The user may request for a new identity, or use current identity to generate a new certificate.
+When the user first start any application, for example, NDNFit, a certificate will be requested and the user would be lead to identity manager.
+The user may request for a new certificate, or use current identity to generate a new certificate.
 \par
 \begin{minipage}[b]{\linewidth}
 	\centering
@@ -209,7 +210,7 @@ The user may request for a new identity, or use current identity to generate a n
 \section*{Future Work}
 
 \par 
-	Identity manager is now functional, but there are more details that can be added, including:
+	Identity manager is about to be functional, and there are more details that can be added, including:
 	\begin{itemize}
 		\item identity deleting, 
 		\item collision handling when identities have same name,
