@@ -49,7 +49,7 @@
 \begin{minipage}[b]{0.6\linewidth}
 \veryHuge \color{NavyBlue} \textbf{NDNCERT in Identity Manager} \color{Black}\\ % Title
 \Huge\textit{A trial to implement an identity manage using NDNCERT in Named Data Networking(NDN)}\\[2cm] % Subtitle
-\huge \textbf{Yuyang(Peter) Rong, Arthi Padmanabhan, Lixia Zhang}\\[0.5cm] % Author(s)
+\Large \textbf{Yuyang(Peter) Rong, \\ Arthi Padmanabhan, Zhiyi Zhang, Lixia Zhang}\\[0.5cm] % Author(s)
 \Large ShanghaiTech / UCLA \\ [0.4cm] % University/organization
 \Large \texttt{PeterRong96@gmail.com} --- +1 (310) 307 9952\\
 \end{minipage}
@@ -72,7 +72,7 @@
 
 \begin{abstract}
 
-Security and privacy in networking are gaining more and more attention nowadays. NDN proposed by Lixia Zhang has shown great potential in security. In NDN, each packet has to be signed and thus secured. In this work, we would use NDNCERT, a certificate manager, to request and manage certificates that can be used to sign data packets. We would install this manager in cell phones and thus allow other applications to gain certificate through this manager. 
+Security and privacy in networking are gaining more and more attention nowadays. NDN is a newly proposed architecture that has shown great potential in security. In NDN, each packet has to be signed and thus is secured. In this work, we use NDNCERT, a certificate manager, to request and manage certificates that can be used to sign data packets. We would install this manager in cell phones and thus allow other applications like NDNFit to gain certificate through this manager. 
 
 \end{abstract}
 
@@ -83,7 +83,7 @@ Security and privacy in networking are gaining more and more attention nowadays.
 \color{SaddleBrown} % SaddleBrown color for the introduction
 
 \section*{Introduction}
-NDN requires each packet to be signed and thus can be verified. In real life applications, how they can sign their packets become a problem. Packets can be intact with the protection of self-signed signature, but it does not make the packet, nor the application, trustworthy. NDNCERT is a protocol that allows client to request a certificate that can be used to sign packets from Certificate Authority(CA). Once certificate is issued by CA, application can use that certificate to sign packets and anyone that truest the CA can trust that application. We would use NDNCERT to write a identity manager to request certificates from CA and present them to applications that are requesting it.
+NDN requires each packet to be signed and thus can be verified. However, our ability to verify the data does not necessarily mean we can trust the signing entity. NDNCERT is a protocol that allows client to request a certificate from Certificate Authority(CA) that can be used to sign packets. Applications like NDNFit can use such a manager to manage other applications. We used NDNFit as a proof-of-concept example to show that NDNCERT can be used in identity to help manage and distribute identities.
 
 %----------------------------------------------------------------------------------------
 %	OBJECTIVES
@@ -113,55 +113,64 @@ NDN requires each packet to be signed and thus can be verified. In real life app
 	To request for a piece of data, one can express an interest with data's name inside and wait.
 	When an interest is received, the corresponding data should be sent. 
 	In this consumer-producer model, each and every data packet has to be signed and thus consumer can verify the integrity of the data.
+
+%------------------------------------------------
+\subsection*{NDN Certificate management protocol(NDNCERT)\cite{zhang2017ndncert}}
 \par
-	Routers behavior is not our focus in this work, you can refer to the figure below or the paper cited to see how it works.
+	NDNCERT is a set of protocols that allows auto certificate management.
+	In NDN, everyone has corresponding namespace and the certificate to sign any data produced in this namespace.
+	However, this only guarantees the integrity of the data, consumers can not distinguish if the producer of the data is malicious.
+	A mechanism is provided in NDNCERT to get certificate from Certificate Authority(CA).
+	Making it possible for one entity to trust the other entity if it has a certificate presented by a trustworthy CA.
 \par
 \begin{minipage}[b]{0.55\linewidth}
 	\includegraphics[width=\linewidth]{figures/packet.png}
 	\captionof{figure}{packet format in NDN}
-	\includegraphics[width=\linewidth]{figures/router.png}
-	\captionof{figure}{router behaviors}
+	\includegraphics[width=\linewidth]{figures/NDNfit.png}
+	\captionof{figure}{NDNFit work flow}
 \end{minipage}
 \begin{minipage}[b]{0.45\linewidth}
 	\includegraphics[width=\linewidth]{figures/protocol.png}
 	\captionof{figure}{NDNCERT protocol}
 \end{minipage}
-
-%------------------------------------------------
-\subsection*{NDN Certificate management protocol(NDNCERT)\cite{zhang2017ndncert}}
-\par
-	NDNCERT enables automatic certificate management in NDN. 
-	In NDN, every entity should have corresponding identity (namespace) and the corresponding certificate for this namespace. 
-	Moreover, entities need simple mechanisms to manage sub-identities and their certificates. 
-	NDNCERT provides flexible mechanisms to request certificate from a certificate authority(CA) and, as soon as certificate is obtained, mechanisms to issue and manage certificates in the designated namespace.
 \par
 	In our project, we will be mainly focus on NDNCERT's client part. 
 	As we would use NDNCERT client to get a certificate from CA and then manages these identities.
 \par
-	For each client to get a certificate, the steps listed in the figure above should be performed.
+	For each client to get a certificate, the steps listed in the figure should be performed.
 
 %------------------------------------------------
-% TODO: This too.
-\subsection*{Android \& Java Native Interface(JNI)}
-\par 
-	Applications like NDNFit require mobile clients. 
-	In our case, we preferred Android over Apple, as Android are easier to develop and test.
-	What's more, in the long run Android can be rooted to support NDN, yet Apple can't.
-	Android has to be developed using Java, yet NDNCERT and NDN are written in c++. 
-	Whether or not to use JNI has been a problem. 
-	JNI provides native access to non-Java languages, allowing us to call c/c++ functions using Java. 
-	In our first implementation we didn't use Java, instead we rewrote NDNCERT using Java. The benefits includes:
-	\begin{itemize}
-		\item No overheads for calling JNI.
-		\item Easier to program/debug than JNI.
-	\end{itemize}
+%\subsection*{Android \& Java Native Interface(JNI)}
+%\par 
+%	Applications like NDNFit require mobile clients. 
+%	In our case, we preferred Android over Apple, as Android are easier to develop and test.
+%	What's more, in the long run Android can be rooted to support NDN, yet Apple can't.
+%	Android has to be developed using Java, yet NDNCERT and NDN are written in c++. 
+%	Whether or not to use JNI has been a problem. 
+%	JNI provides native access to non-Java languages, allowing us to call c/c++ functions using Java. 
+%	In our first implementation we didn't use Java, instead we rewrote NDNCERT using Java. The benefits includes:
+%	\begin{itemize}
+%		\item No overheads for calling JNI.
+%		\item Easier to program/debug than JNI.
+%	\end{itemize}
+%\par
+%	However, soon we realized that they are downsizes too:
+%	\begin{itemize}
+%		\item Code base may be too hard to maintain. Same feature has to be implemented/ debugged twice.
+%	\end{itemize}
+%\par
+%	We implemented both and compared the process and the difficulty of developing.
+
+%------------------------------------------------
+\subsection*{NDNFit\cite{zhang2018ndnfit}}
 \par
-	However, soon we realized that they are downsizes too:
-	\begin{itemize}
-		\item Code base may be too hard to maintain. Same feature has to be implemented/ debugged twice.
-	\end{itemize}
-\par
-	We implemented both and compared the process and the difficulty of developing.
+	NDNFit is a set of applications that run on different platforms. 
+	The project initiates from OpenmHealth. 
+	NDNFit contains data generation app, store(DSU), visualize(DVU), process(DPU). 
+	Combined they would generate, store and analysis your health data.
+	But for NDNFit to work, each application and user needs a certificate to generate or transfer data.
+	These certificates will not only secure data, but also identify users and thus separate their data apart.
+	For a detailed explanation of how components of NDNFit work, you may refer to the figure above.
 
 %----------------------------------------------------------------------------------------
 %	RESULTS 
@@ -169,7 +178,11 @@ NDN requires each packet to be signed and thus can be verified. In real life app
 
 \section*{Result}
 \par
-Currently, the user can view details about one identity by pressing the name of the identity in the main page, or create one by pressing plus sign. The UI of certain steps in the process for apply for a new certificate is shown below. 
+Currently, the user can view details about one identity by pressing the name of the identity in the main page, or create one by pressing plus sign. 
+The UI of certain steps in the process for apply for a new certificate is shown below. 
+\par
+When user first start any application, for example, NDNFit, a certificate will be requested and the user would be lead to identity manager.
+The user may request for a new identity, or use current identity to generate a new certificate.
 \par
 \begin{minipage}[b]{\linewidth}
 	\centering
@@ -218,7 +231,7 @@ Currently, the user can view details about one identity by pressing the name of 
 
 \section*{Acknowledgments}
 
-We would like to thank Lixia Zhang, Arthi Padmanabhan for their help and guidance. Alex Afanasyev provided a lot of help when we were developing Android application. Finally, we would like to thanks Ren Sun and CSST for providing such great opportunity.
+We would like to thank Lixia Zhang, Arthi Padmanabhan for their help and guidance. Zhiyi Zhang and Alex Afanasyev provided a lot of help when we were developing Android application. Finally, we would like to thanks Ren Sun and CSST for providing such great opportunity.
 %----------------------------------------------------------------------------------------
 
 \end{multicols}
