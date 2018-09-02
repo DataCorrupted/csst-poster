@@ -49,10 +49,15 @@
 \begin{minipage}[b]{0.6\linewidth}
 \veryHuge \color{NavyBlue} \textbf{NDNCERT in Identity Manager} \color{Black}\\ % Title
 \Huge\textit{A trial to implement an identity manage using NDNCERT in Named Data Networking(NDN)}\\[2cm] % Subtitle
-\Large \textbf{Yuyang(Peter) Rong, \\ Arthi Padmanabhan, Zhiyi Zhang, Lixia Zhang}\\[0.5cm] % Author(s)
+\Large \textbf{Yuyang(Peter) Rong, Arthi Padmanabhan, Lixia Zhang \footnotemark}\\[0.5cm] % Author(s)
 \Large ShanghaiTech / UCLA \\ [0.4cm] % University/organization
 \Large \texttt{PeterRong96@gmail.com} --- +1 (310) 307 9952\\
 \end{minipage}
+\footnotetext{	
+	We also want to thank the following people for their help:
+	Lixia Zhang, Arthi Padmanabhan, Zhiyi Zhang and Alex Afanasyev. They helped a lot when developing this application. 
+	Ren Sun and CSST for providing such great opportunity.
+}
 %
 \begin{minipage}[b]{0.4\linewidth}
 	\includegraphics[width=\linewidth]{figures/logo.png}\\
@@ -68,23 +73,30 @@
 %	ABSTRACT
 %----------------------------------------------------------------------------------------
 
-\color{Navy} % Navy color for the abstract
+%\color{Navy} % Navy color for the abstract
 
-\begin{abstract}
+%\begin{abstract}
 
-Security and privacy in networking are gaining more and more attention nowadays. NDN is a newly proposed architecture that has shown great potential in security. In NDN, each packet has to be signed and thus is secured. In this work, we use NDNCERT, a certificate manager, to request and manage certificates that can be used to sign data packets. We would install this manager in cell phones and thus allow other applications like NDNFit to gain certificate through this manager. 
+%	Security and privacy in networking are gaining more and more attention nowadays. 
+%	NDN is a newly proposed architecture that has shown great potential in security. 
+%	In NDN, each packet has to be signed and thus is secured. 
+%	In this work, we use NDNCERT, a certificate manager, to request and manage certificates that can be used to sign data packets. 
+%	We would install this manager in cell phones and thus allow other applications like NDNFit to gain certificate through this manager. 
 
-\end{abstract}
+%\end{abstract}
 
 %----------------------------------------------------------------------------------------
 %	INTRODUCTION
 %----------------------------------------------------------------------------------------
 
 \color{SaddleBrown} % SaddleBrown color for the introduction
-
-\section*{Introduction}
-NDN requires each data packet to be signed and thus can be verified. However, our ability to verify the data does not necessarily mean that we can trust the signing entity. NDNCERT is a protocol that allows client to request a certificate from Certificate Authority(CA) that can be used to sign packets. Applications like NDNFit can use such a manager to manage other applications. We used NDNFit as a proof-of-concept example to show that NDNCERT can be used in identity manager to help manage and distribute identities.
-
+\section*{Problem}
+	Security and privacy in networking are gaining more and more attention nowadays. 
+	NDN is a newly proposed architecture that has shown great potential in security. 
+	In NDN, each packet has to be signed and thus is secured. 
+	But in applications like NDNFit, signing entity cannot be trusted.
+	In this work, we would be using NDNCERT to get a certificate for appliations in NDNFit.
+	These issued certificates make them trustworthy.
 %----------------------------------------------------------------------------------------
 %	OBJECTIVES
 %----------------------------------------------------------------------------------------
@@ -105,40 +117,39 @@ NDN requires each data packet to be signed and thus can be verified. However, ou
 
 \section*{Packages}
 
-%------------------------------------------------
-
+\begin{minipage}[b]{0.3\linewidth}
 \subsection*{NDN\cite{zhang2014named}}
 \par
-	Unlike tradition TCP/IP architecture, in NDN every data is named under a namespace. 
-	To request for a piece of data, one can express an interest with data's name inside and wait.
-	When an interest is received, the corresponding data should be sent if it exists. 
-	The details about the format of the packets can be found in the figure below.
-	In this consumer-producer model, each and every data packet has to be signed and thus consumer can verify the integrity of the data.
+	\begin{itemize}
+		\item Interest \& Data;
+		\item Both have to be signed and thus verifiable.
+	\end{itemize}
 
-%------------------------------------------------
-\subsection*{NDN Certificate management protocol(NDNCERT)\cite{zhang2017ndncert}}
+\subsection*{NDNFit\cite{zhang2018ndnfit}}
 \par
-	NDNCERT is a set of protocols that allows auto certificate management.
-	In NDN, everyone has corresponding namespace and the certificate to sign any data produced in this namespace.
-	However, this only guarantees the integrity of the data, consumers can not distinguish if the producer of the data is malicious.
-	A mechanism is provided in NDNCERT to get certificate from Certificate Authority(CA).
-	Making it possible for one entity to trust the other if the data received is signed by a certificate presented by a trustworthy CA.
+	\begin{itemize}
+		\item A set of applications runs on NDN;
+		\item DSU, DVU, DPU \& Identity manager
+		\item Different namespaces for each application and user
+		\item Identity manager manages all the identities.
+	\end{itemize}
 \par
-\begin{minipage}[b]{0.55\linewidth}
-	\includegraphics[width=\linewidth]{figures/packet.png}
-	\captionof{figure}{packet format in NDN}
+\end{minipage}
+\begin{minipage}[b]{0.65\linewidth}
 	\includegraphics[width=\linewidth]{figures/NDNfit.png}
-	\captionof{figure}{NDNFit work flow}
 \end{minipage}
-\begin{minipage}[b]{0.45\linewidth}
-	\includegraphics[width=\linewidth]{figures/protocol.png}
-	\captionof{figure}{NDNCERT protocol}
-\end{minipage}
-\par
-	In our project, we will be mainly focus on NDNCERT's client part. 
-	As we would use NDNCERT client to get a certificate from CA and then manages these identities.
-\par
-	For each client to get a certificate, the steps listed in the figure should be performed.
+
+
+\includegraphics[width=\linewidth]{figures/packet.png}
+
+\subsection*{NDN Certificate management protocol(NDNCERT)\cite{zhang2017ndncert}}
+\begin{itemize}
+	\item A protocol that allows auto certificate managerment;
+	\item Identity will request certificate from Certificate Authority(CA);
+	\item NDNCERT will be placed in identity manager;
+	\item Once the certificate is acquired, it will be used to manage that namespace.
+\end{itemize}
+
 
 %------------------------------------------------
 %\subsection*{Android \& Java Native Interface(JNI)}
@@ -162,37 +173,30 @@ NDN requires each data packet to be signed and thus can be verified. However, ou
 %\par
 %	We implemented both and compared the process and the difficulty of developing.
 
-%------------------------------------------------
-\subsection*{NDNFit\cite{zhang2018ndnfit}}
-\par
-	NDNFit is a set of applications that run on different platforms. 
-	The project initiates from OpenmHealth. 
-	NDNFit contains data generation, store(DSU), visualize(DVU), process(DPU) units. 
-	Combined they would generate, store and analysis your health data.
-	But for NDNFit to work, each application and user needs a certificate to generate or transfer data in their namespace.
-	These certificates will not only secure data, but also identify users and thus separate their data apart.
-	For a detailed explanation of how components of NDNFit work, you may refer to the figure above.
-
 %----------------------------------------------------------------------------------------
 %	RESULTS 
 %----------------------------------------------------------------------------------------
 
 \section*{Result}
-\par
-Currently, the user can view details about one identity by pressing the name of the identity in the main page, or create one by pressing plus sign. 
-The UI of certain steps in the process for apply for a new certificate is shown below. 
-\par
-When the user first start any application, for example, NDNFit, a certificate will be requested and the user would be lead to identity manager.
-The user may request for a new certificate, or use current identity to generate a new certificate.
-\par
-\begin{minipage}[b]{\linewidth}
+\begin{itemize}
+	\item Our identity manager has a new UI
+	\item Following the steps the user can create a new certificate
+	\item At the first time NDNFit is started, a certificate will be distributed by identity manager
+\end{itemize}
+
+\begin{minipage}[b]{0.57\linewidth}
+	\includegraphics[width=\linewidth]{figures/protocol.png}
+\end{minipage}
+\begin{minipage}[b]{0.43\linewidth}
 	\centering
-	\includegraphics[width=0.24\linewidth]{figures/main-activity.jpg}
-	\includegraphics[width=0.24\linewidth]{figures/select.jpg}
-	\includegraphics[width=0.24\linewidth]{figures/validate.jpg}
-	\includegraphics[width=0.24\linewidth]{figures/download.jpg}
+	\includegraphics[width=\linewidth]{figures/main-activity.jpg}
 \end{minipage}
 
+\begin{center}
+	\includegraphics[width=0.27\linewidth]{figures/select.jpg}
+	\includegraphics[width=0.27\linewidth]{figures/validate.jpg}
+	\includegraphics[width=0.27\linewidth]{figures/download.jpg}
+\end{center}
 %----------------------------------------------------------------------------------------
 %	CONCLUSIONS
 %----------------------------------------------------------------------------------------
@@ -216,7 +220,6 @@ The user may request for a new certificate, or use current identity to generate 
 		\item collision handling when identities have same name,
 		\item certificate distribute when requested by other app.
 	\end{itemize} 
-	There are still coding to do before this app can be used by users.
 
 %----------------------------------------------------------------------------------------
 %	REFERENCES
@@ -224,15 +227,19 @@ The user may request for a new certificate, or use current identity to generate 
 
 \nocite{*} % Print all references regardless of whether they were cited in the poster or not
 \bibliographystyle{plain} % Plain referencing style
-\bibliography{reference} % Use the example bibliography file sample.bib
-
+\bibliography{reference}
 %----------------------------------------------------------------------------------------
 %	ACKNOWLEDGEMENTS
 %----------------------------------------------------------------------------------------
 
-\section*{Acknowledgments}
+%\section*{Acknowledgments}
 
-We would like to thank Lixia Zhang, Arthi Padmanabhan for their help and guidance. Zhiyi Zhang and Alex Afanasyev provided a lot of help when we were developing Android application. Finally, we would like to thanks Ren Sun and CSST for providing such great opportunity.
+%\par
+%	\footnotesize{We would like to thank the following people for their help:}
+%	\footnotesize{
+%		Lixia Zhang, Arthi Padmanabhan, Zhiyi Zhang and Alex Afanasyev. 
+%		Ren Sun and CSST for providing such great opportunity.
+%	}
 %----------------------------------------------------------------------------------------
 
 \end{multicols}
