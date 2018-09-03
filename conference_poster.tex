@@ -48,7 +48,7 @@
 
 \begin{minipage}[b]{0.6\linewidth}
 \veryHuge \color{NavyBlue} \textbf{NDNCERT in Identity Manager} \color{Black}\\ % Title
-\Huge\textit{A trial to implement an identity manage using NDNCERT in Named Data Networking(NDN)}\\[2cm] % Subtitle
+\Huge\textit{Implementing an NDN identity manager on Android}\\[2cm] % Subtitle
 \Large \textbf{Yuyang(Peter) Rong, Arthi Padmanabhan, Lixia Zhang \footnotemark}\\[0.5cm] % Author(s)
 \Large ShanghaiTech / UCLA \\ [0.4cm] % University/organization
 \Large \texttt{PeterRong96@gmail.com} --- +1 (310) 307 9952\\
@@ -56,7 +56,7 @@
 \footnotetext{	
 	We also want to thank the following people for their help:
 	Lixia Zhang, Arthi Padmanabhan, Zhiyi Zhang and Alex Afanasyev. They helped a lot when developing this application. 
-	Ren Sun and CSST for providing such great opportunity.
+	Besides, we appreciate Ren Sun and CSST for providing such great opportunity.
 }
 %
 \begin{minipage}[b]{0.4\linewidth}
@@ -69,80 +69,45 @@
 
 \begin{multicols}{2} % This is how many columns your poster will be broken into, a portrait poster is generally split into 2 columns
 
-%----------------------------------------------------------------------------------------
-%	ABSTRACT
-%----------------------------------------------------------------------------------------
-
-%\color{Navy} % Navy color for the abstract
-
-%\begin{abstract}
-
-%	Security and privacy in networking are gaining more and more attention nowadays. 
-%	NDN is a newly proposed architecture that has shown great potential in security. 
-%	In NDN, each packet has to be signed and thus is secured. 
-%	In this work, we use NDNCERT, a certificate manager, to request and manage certificates that can be used to sign data packets. 
-%	We would install this manager in cell phones and thus allow other applications like NDNFit to gain certificate through this manager. 
-
-%\end{abstract}
-
-%----------------------------------------------------------------------------------------
-%	INTRODUCTION
-%----------------------------------------------------------------------------------------
-
-\color{SaddleBrown} % SaddleBrown color for the introduction
-\section*{Problem}
-	Security and privacy in networking are gaining more and more attention nowadays. 
-	NDN is a newly proposed architecture that has shown great potential in security. 
-	In NDN, each packet has to be signed and thus is secured. 
-	But in applications like NDNFit, signing entity cannot be trusted.
-	In this work, we would be using NDNCERT to get a certificate for appliations in NDNFit.
-	These issued certificates make them trustworthy.
-%----------------------------------------------------------------------------------------
-%	OBJECTIVES
-%----------------------------------------------------------------------------------------
-
+\section*{Named Data Networking(NDN)\cite{zhang2014named}}
+\par
+	\begin{itemize}
+		\item Use Inerest packet to fetch Data packet;
+		\item All data packets are signed, making data verifiable and reliable;
+\color{SaddleBrown}
+		\item \large{\textbf{Signing entity cannot be trusted in applications like NDNFit;}}
+		\item \large{\textbf{Certificate required to verify signing entity.}}
+	\end{itemize}
+\includegraphics[width=\linewidth]{figures/packet.png}
 \color{DarkSlateGray} % DarkSlateGray color for the rest of the content
-
-\section*{Main Objectives}
-
-\begin{enumerate}
-\item Use NDNCERT to write identity manager;
-\item Explore NDN development on Android and provide experience for other apps;
-\item Provide an identity manager to update NDNFit.
-\end{enumerate}
 
 %----------------------------------------------------------------------------------------
 %	MATERIALS AND METHODS
 %----------------------------------------------------------------------------------------
 
-\section*{Packages}
+\begin{minipage}[b]{0.35\linewidth}
 
-\begin{minipage}[b]{0.3\linewidth}
-\subsection*{NDN\cite{zhang2014named}}
+\section*{NDNFit\cite{zhang2018ndnfit}}
 \par
 	\begin{itemize}
-		\item Interest \& Data;
-		\item Both have to be signed and thus verifiable.
-	\end{itemize}
-
-\subsection*{NDNFit\cite{zhang2018ndnfit}}
-\par
-	\begin{itemize}
-		\item A set of applications runs on NDN;
-		\item DSU, DVU, DPU \& Identity manager
-		\item Different namespaces for each application and user
+		\item A set of \textbf{health management} applications run on NDN:
+		\begin{itemize}
+			\item Data storage unit(DSU);
+			\item Data visualization unit(DVU);
+			\item Data processing unit(DPV);
+			\item Identity manager;
+			\item User applications.
+		\end{itemize}
+		\item Different namespace for each application and user;
 		\item Identity manager manages all the identities.
 	\end{itemize}
 \par
 \end{minipage}
-\begin{minipage}[b]{0.65\linewidth}
+\begin{minipage}[b]{0.64\linewidth}
 	\includegraphics[width=\linewidth]{figures/NDNfit.png}
 \end{minipage}
 
-
-\includegraphics[width=\linewidth]{figures/packet.png}
-
-\subsection*{NDN Certificate management protocol(NDNCERT)\cite{zhang2017ndncert}}
+\section*{NDN Certificate management protocol(NDNCERT)\cite{zhang2017ndncert}}
 \begin{itemize}
 	\item A protocol that allows auto certificate managerment;
 	\item Identity will request certificate from Certificate Authority(CA);
@@ -150,28 +115,16 @@
 	\item Once the certificate is acquired, it will be used to manage that namespace.
 \end{itemize}
 
+%----------------------------------------------------------------------------------------
+%	OBJECTIVES
+%----------------------------------------------------------------------------------------
 
-%------------------------------------------------
-%\subsection*{Android \& Java Native Interface(JNI)}
-%\par 
-%	Applications like NDNFit require mobile clients. 
-%	In our case, we preferred Android over Apple, as Android are easier to develop and test.
-%	What's more, in the long run Android can be rooted to support NDN, yet Apple can't.
-%	Android has to be developed using Java, yet NDNCERT and NDN are written in c++. 
-%	Whether or not to use JNI has been a problem. 
-%	JNI provides native access to non-Java languages, allowing us to call c/c++ functions using Java. 
-%	In our first implementation we didn't use Java, instead we rewrote NDNCERT using Java. The benefits includes:
-%	\begin{itemize}
-%		\item No overheads for calling JNI.
-%		\item Easier to program/debug than JNI.
-%	\end{itemize}
-%\par
-%	However, soon we realized that they are downsizes too:
-%	\begin{itemize}
-%		\item Code base may be too hard to maintain. Same feature has to be implemented/ debugged twice.
-%	\end{itemize}
-%\par
-%	We implemented both and compared the process and the difficulty of developing.
+\section*{Main Objectives}
+
+\begin{enumerate}
+\item \textbf{Use NDNCERT to write identity manager to update NDNFit;}
+\item \textbf{Explore NDN development on Android and provide experience for other applications;}
+\end{enumerate}
 
 %----------------------------------------------------------------------------------------
 %	RESULTS 
